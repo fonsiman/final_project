@@ -93,11 +93,19 @@ while True:
 
     predictions = predict_rgb_image(process_img(frame))
 
-    best_pred = np.argmax(predictions, axis=1)
+    cascade = cv2.CascadeClassifier('haarcascades/hand.xml')
+    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=1, minSize=(1,1))
+    #best_pred = np.argmax(predictions, axis=1)
 
-    if (predictions[0][best_pred] > .8):
-        print(predictions[0][best_pred], class_names[best_pred[0]])
-    cv2.imshow('object_detection', frame)
+
+    #if (predictions[0][best_pred] > .8):
+        #print(predictions[0][best_pred], class_names[best_predR0]])
+
+    if len(handRect) == 1:
+        print("Hay mano")
+
+
+    cv2.imshow("Image", frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

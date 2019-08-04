@@ -61,7 +61,8 @@ def pinball():
 
 threshold = 0.8
 
-class_names = {0: 'Palma', 1: 'Thumb', 2: 'Victoria', 3: 'Indice', 4: 'RockNRoll', 5: 'OK'}
+class_names = {0: 'down', 1: 'palm', 2: 'L', 3: 'fist', 4: 'fist_moved', 5: 'thumb', 6: "index",
+               7: "ok", 8: "palm_moved", 9: "c"}
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
@@ -93,9 +94,9 @@ while True:
     predictions = predict_rgb_image(process_img(frame))
 
     best_pred = np.argmax(predictions, axis=1)
-    print(predictions[0][best_pred], best_pred)
+
     if (predictions[0][best_pred] > .8):
-        pass
+        print(predictions[0][best_pred], class_names[best_pred[0]])
     cv2.imshow('object_detection', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -74,7 +74,9 @@ model = load_model('models/second_model.h5')
 #model = cv2.dnn.readNetFromTensorflow('models/second_model.h5')
 
 def predict_rgb_image(img):
-    return model.predict(img)
+    prediction = model.predict(img)
+    prediction = class_names[np.argmax(prediction, axis=1)[0]]
+    return prediction
 
 def process_img(img):
     X = []
@@ -93,16 +95,36 @@ while True:
 
     predictions = predict_rgb_image(process_img(frame))
 
-    cascade = cv2.CascadeClassifier('haarcascades/hand.xml')
-    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=1, minSize=(1,1))
-    #best_pred = np.argmax(predictions, axis=1)
+    '''cascade = cv2.CascadeClassifier('haarcascades_opencv/haarcascade_frontalface_alt.xml')
+    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=3, minSize=(1,1))
 
+    print(handRect)
+    if len(handRect) >= 1:
+        for rect in handRect:
+            cv2.rectangle(frame,
+                      (rect[0],
+                       rect[1]),
+                      (rect[0]+rect[2],
+                       rect[1]+rect[3]),
+                      (0, 0, 255),
+                      thickness=2)'''
 
-    #if (predictions[0][best_pred] > .8):
-        #print(predictions[0][best_pred], class_names[best_predR0]])
+    # Select Region of Interest (ROI)
+    tuplas_crop = (int(.6 * frame.shape[1]), 20), (frame.shape[1]-20, int(.8 * frame.shape[0]))
 
-    if len(handRect) == 1:
-        print("Hay mano")
+    cv2.rectangle(frame, tuplas_crop[0], tuplas_crop[1], (255, 0, 0), 2)
+
+    if cv2.waitKey(1) & 0xFF == ord('t'):
+        print(tuplas_crop[1][1], tuplas_crop[1][0])
+        crop_img = frame[tuplas_crop[0][1]:tuplas_crop[1][1], tuplas_crop[0][0]:tuplas_crop[1][0]]
+        print(predict_rgb_image(process_img(crop_img)))
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    '''r = cv2.selectROI(frame)
+
+    # Crop image
+    imCrop = frame[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]'''
 
 
     cv2.imshow("Image", frame)

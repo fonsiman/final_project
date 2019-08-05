@@ -3,6 +3,24 @@ import numpy as np
 import time
 from random import randint
 from keras.models import load_model
+from git import Repo
+
+PATH_OF_GIT_REPO = r'/home/alfonso\ironhack\final_project\.git'  # make sure .git folder is properly configured
+COMMIT_MESSAGE = 'Guardado automático por gestos'
+
+def git_push():
+    try:
+
+        repo = Repo(PATH_OF_GIT_REPO)  # if repo is CWD just do '.'
+        repo.index.add(["main.py"])
+        repo.index.commit(COMMIT_MESSAGE)
+        origin = repo.remote('origin')
+        origin.push()
+
+    except:
+        print('Some error occured while pushing the code')
+
+
 
 def pinball():
     while True:
@@ -93,38 +111,9 @@ while True:
 
     ret, frame = cap.read()
 
-    predictions = predict_rgb_image(process_img(frame))
-
-    '''cascade = cv2.CascadeClassifier('haarcascades_opencv/haarcascade_frontalface_alt.xml')
-    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=3, minSize=(1,1))
-
-    print(handRect)
-    if len(handRect) >= 1:
-        for rect in handRect:
-            cv2.rectangle(frame,
-                      (rect[0],
-                       rect[1]),
-                      (rect[0]+rect[2],
-                       rect[1]+rect[3]),
-                      (0, 0, 255),
-                      thickness=2)'''
-
-    # Select Region of Interest (ROI)
-    tuplas_crop = (int(.6 * frame.shape[1]), 20), (frame.shape[1]-20, int(.8 * frame.shape[0]))
-
-    cv2.rectangle(frame, tuplas_crop[0], tuplas_crop[1], (255, 0, 0), 2)
 
     if cv2.waitKey(1) & 0xFF == ord('t'):
-        print(tuplas_crop[1][1], tuplas_crop[1][0])
-        crop_img = frame[tuplas_crop[0][1]:tuplas_crop[1][1], tuplas_crop[0][0]:tuplas_crop[1][0]]
-        print(predict_rgb_image(process_img(crop_img)))
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    '''r = cv2.selectROI(frame)
-
-    # Crop image
-    imCrop = frame[int(r[1]):int(r[1] + r[3]), int(r[0]):int(r[0] + r[2])]'''
+        git_push()
 
 
     cv2.imshow("Image", frame)

@@ -18,18 +18,24 @@ while True:
         gray_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
         YCrCb_crop = cv2.cvtColor(crop_img, cv2.COLOR_BGR2YCrCb)
 
-        writeStatus =  cv2.imwrite( "images/gray/Gray_Image"+str(i)+".jpg", gray_crop )
+        writeStatus =  cv2.imwrite( "images/peace2/gray/Gray_Image"+str(i)+".jpg", gray_crop )
         if writeStatus is True:
             print("Guardado gray: " + str(i))
         else:
             print("Problema con gray")
 
 
-        writeStatus2 =  cv2.imwrite( "images/YCrCb/YCrCb_Image"+str(i)+".jpg", YCrCb_crop )
+        writeStatus2 =  cv2.imwrite( "images/peace2/YCrCb/YCrCb_Image"+str(i)+".jpg", YCrCb_crop )
         if writeStatus2 is True:
             print("Guardado YCrCb: " + str(i))
         else:
             print("Problema con YCrCb")
+
+        writeStatus3 =  cv2.imwrite( "images/peace2/color/color_Image"+str(i)+".jpg", crop_img )
+        if writeStatus3 is True:
+            print("Guardado color: " + str(i))
+        else:
+            print("Problema con color")
 
         i+=1
 

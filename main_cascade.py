@@ -7,8 +7,8 @@ while True:
 
     ret, frame = cap.read()
 
-    cascade = cv2.CascadeClassifier('haarcascades2/Hand.Cascade.1.xml')
-    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=15, minSize=(1,1))
+    cascade = cv2.CascadeClassifier('haarcascades_opencv/haarcascade_fullbody.xml')
+    handRect = cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=1, minSize=(1,1))
 
     print(handRect)
     if len(handRect) >= 1:

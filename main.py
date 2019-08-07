@@ -4,6 +4,7 @@ import time
 from random import randint
 from keras.models import load_model
 from git import Repo
+import webbrowser
 
 PATH_OF_GIT_REPO = r'/home/alfonso/ironhack/final_project/.git'  # make sure .git folder is properly configured
 COMMIT_MESSAGE = 'Guardado automático por gestos'
@@ -32,6 +33,8 @@ height = frame.shape[0] // 2
 
 model = load_model('models/model5000.h5')
 #model = cv2.dnn.readNetFromTensorflow('models/second_model.h5')
+
+cont = {"nothing": 0}
 
 def predict_rgb_image(img):
     prediction = model.predict(img)
@@ -96,12 +99,29 @@ while True:
     best_prediction = class_names[np.argmax(prediction)]
     score = np.amax(prediction)
 
+    gesto_actual = list(cont.keys())[0]
+
+    if gesto_actual == best_prediction:
+        cont[gesto_actual] += 1
+    else:
+        cont = {
+            best_prediction: 0
+        }
+    print(cont)
+    if gesto_actual == "ok" and list(cont.values())[0] == 30:
+        webbrowser.open('http://www.google.com')
+
+    if gesto_actual == "fist" and list(cont.values())[0] == 30:
+        git_push()
+
     cv2.putText(frame,
         best_prediction + ' ' + str(round(score, 2)),
         (20, 30 + int(0.6 * frame.shape[0])),
         cv2.FONT_HERSHEY_SIMPLEX,
         1,
-        (255, 0, 0))
+        (255, 0, 0),
+        2,
+        cv2.LINE_AA)
 
     cv2.imshow("Image", frame)
 

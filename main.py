@@ -5,7 +5,7 @@ from random import randint
 from keras.models import load_model
 from git import Repo
 
-PATH_OF_GIT_REPO = r'/home/alfonso\ironhack\final_project\.git'  # make sure .git folder is properly configured
+PATH_OF_GIT_REPO = r'/home/alfonso/ironhack/final_project/.git'  # make sure .git folder is properly configured
 COMMIT_MESSAGE = 'Guardado automático por gestos'
 
 def git_push():
@@ -22,7 +22,7 @@ def git_push():
 
 threshold = 0.8
 
-class_names = {0: 'fist', 1: 'ok', 2: 'peace', 1: 'C', 4: 'noyhing'}
+class_names = {0: 'fist', 1: 'ok', 2: 'peace', 3: 'C', 4: 'nothing'}
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
@@ -35,7 +35,6 @@ model = load_model('models/model5000.h5')
 
 def predict_rgb_image(img):
     prediction = model.predict(img)
-    prediction = class_names[np.argmax(prediction)]
     return prediction
 
 def process_img(img):
@@ -63,16 +62,15 @@ def process_image(img):
 
     new_image = cv2.floodFill(img, None, (height//2, width//2), (255), (tolerancia,) * 3, (tolerancia,) * 3, flags)
 
-
     new_image=cv2.threshold(new_image[1],254,255,cv2.THRESH_BINARY)
 
     new_image = cv2.resize(new_image[1][:,:,0], (200,200)) # Reduce image size so training can be faster
 
-    writeStatus =  cv2.imwrite( "images/Camera_Image.jpg", new_image )
+    '''writeStatus =  cv2.imwrite( "images/Camera_Image.jpg", new_image )
     if writeStatus is True:
         print("Guardado ok: ")
     else:
-        print("Problema con ok")
+        print("Problema con ok")'''
 
     X=[]
 
@@ -87,14 +85,23 @@ while True:
 
     ret, frame = cap.read()
 
-    tuplas_crop = (int(.6 * frame.shape[1]), 20), (frame.shape[1]-20, int(0.6 * frame.shape[0])) # Tupla con los vértices del rectángulo
+    tuplas_roi = ((20, 20), (int(.4 * frame.shape[1]), int(0.6 * frame.shape[0]))) # Tupla con los vértices del ROI
 
-    cv2.rectangle(frame, tuplas_crop[0], tuplas_crop[1], (255, 0, 0), 2) # Mostramos el rectángulo en la pantalla
+    cv2.rectangle(frame, tuplas_roi[0], tuplas_roi[1], (255, 0, 0), 2) # Mostramos el rectángulo del ROI en la pantalla
 
-    crop_img = frame[tuplas_crop[0][1]:tuplas_crop[1][1], tuplas_crop[0][0]:tuplas_crop[1][0]] # Recortamos el contenido del rectángulo para pasarlo por el modelo
+    crop_img = frame[tuplas_roi[0][1]:tuplas_roi[1][1], tuplas_roi[0][0]:tuplas_roi[1][0]] # Recortamos el contenido del rectángulo para pasarlo por el modelo
 
-    print(predict_rgb_image(process_image(crop_img)))
+    prediction = predict_rgb_image(process_image(crop_img))
 
+    best_prediction = class_names[np.argmax(prediction)]
+    score = np.amax(prediction)
+
+    cv2.putText(frame,
+        best_prediction + ' ' + str(round(score, 2)),
+        (20, 30 + int(0.6 * frame.shape[0])),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (255, 0, 0))
 
     cv2.imshow("Image", frame)
 

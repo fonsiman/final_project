@@ -79,7 +79,7 @@ def pinball():
 
 threshold = 0.8
 
-class_names = {0: 'fist', 1: 'ok', 2: 'peace'}
+class_names = {0: 'fist', 1: 'ok', 2: 'peace', 1: 'C', 4: 'noyhing'}
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
@@ -87,7 +87,7 @@ direccion = randint(0, 3)
 width = frame.shape[1] // 2
 height = frame.shape[0] // 2
 
-model = load_model('models/model3000.h5')
+model = load_model('models/model5000.h5')
 #model = cv2.dnn.readNetFromTensorflow('models/second_model.h5')
 
 def predict_rgb_image(img):
@@ -144,8 +144,13 @@ while True:
 
     ret, frame = cap.read()
 
+    tuplas_crop = (int(.6 * frame.shape[1]), 20), (frame.shape[1]-20, int(0.6 * frame.shape[0])) # Tupla con los vértices del rectángulo
 
-    print(predict_rgb_image(process_image(frame)))
+    cv2.rectangle(frame, tuplas_crop[0], tuplas_crop[1], (255, 0, 0), 2) # Mostramos el rectángulo en la pantalla
+
+    crop_img = frame[tuplas_crop[0][1]:tuplas_crop[1][1], tuplas_crop[0][0]:tuplas_crop[1][0]] # Recortamos el contenido del rectángulo para pasarlo por el modelo
+
+    print(predict_rgb_image(process_image(crop_img)))
 
 
     cv2.imshow("Image", frame)

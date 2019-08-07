@@ -79,8 +79,7 @@ def pinball():
 
 threshold = 0.8
 
-class_names = {0: 'down', 1: 'palm', 2: 'L', 3: 'fist', 4: 'fist_moved', 5: 'thumb', 6: "index",
-               7: "ok", 8: "palm_moved", 9: "c"}
+class_names = {0: 'fist', 1: 'ok', 2: 'peace'}
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
@@ -88,12 +87,12 @@ direccion = randint(0, 3)
 width = frame.shape[1] // 2
 height = frame.shape[0] // 2
 
-model = load_model('models/second_model.h5')
+model = load_model('models/model3000.h5')
 #model = cv2.dnn.readNetFromTensorflow('models/second_model.h5')
 
 def predict_rgb_image(img):
     prediction = model.predict(img)
-    prediction = class_names[np.argmax(prediction, axis=1)[0]]
+    prediction = class_names[np.argmax(prediction)]
     return prediction
 
 def process_img(img):
@@ -107,13 +106,46 @@ def process_img(img):
 
     return X
 
+def process_image(img):
+
+
+
+    connectivity = 4
+    flags = connectivity
+    flags |= cv2.FLOODFILL_FIXED_RANGE
+    tolerancia = 80
+    width = img.shape[1]
+    height = img.shape[0]
+
+
+    new_image = cv2.floodFill(img, None, (height//2, width//2), (255), (tolerancia,) * 3, (tolerancia,) * 3, flags)
+
+
+    new_image=cv2.threshold(new_image[1],254,255,cv2.THRESH_BINARY)
+
+    new_image = cv2.resize(new_image[1][:,:,0], (200,200)) # Reduce image size so training can be faster
+
+    writeStatus =  cv2.imwrite( "images/Camera_Image.jpg", new_image )
+    if writeStatus is True:
+        print("Guardado ok: ")
+    else:
+        print("Problema con ok")
+
+    X=[]
+
+    X.append(new_image)
+
+    X = np.array(X, dtype="uint8")
+    X = X.reshape(1, 200, 200, 1)
+    X=X/255
+    return X
+
 while True:
 
     ret, frame = cap.read()
 
 
-    if cv2.waitKey(1) & 0xFF == ord('t'):
-        git_push()
+    print(predict_rgb_image(process_image(frame)))
 
 
     cv2.imshow("Image", frame)

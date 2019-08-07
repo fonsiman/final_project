@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import time
 from random import randint
 from keras.models import load_model
 from git import Repo
@@ -40,20 +39,8 @@ def predict_rgb_image(img):
     prediction = model.predict(img)
     return prediction
 
-def process_img(img):
-    X = []
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # Converts into the corret colorspace (GRAY)
-    img = cv2.resize(img, (320, 120)) # Reduce image size so training can be faster
-    X.append(img)
-
-    X = np.array(X, dtype="uint8")
-    X = X.reshape(1, 120, 320, 1)
-
-    return X
 
 def process_image(img):
-
-
 
     connectivity = 4
     flags = connectivity

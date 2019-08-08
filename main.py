@@ -118,7 +118,7 @@ while True:
                 best_prediction: 0
             }
             #os.system("spotify --uri:7dQFpbs34ufIEU745DVclf")
-        if gesto_actual == "C" and list(cont.values())[0] == 150:
+        if gesto_actual == "C" and list(cont.values())[0] == 50:
             break
 
     else:
@@ -149,6 +149,7 @@ while True:
         cv2.LINE_AA)
 
     cv2.imshow("Image", frame)
+    cv2.imshow("Image mask", crop_img)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

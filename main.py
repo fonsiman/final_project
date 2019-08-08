@@ -122,10 +122,10 @@ while True:
     else:
         if gesto_actual == "ok" and list(cont.values())[0] == 30 and play == False:
             os.system("sp play")
-            play == True
+            play = True
         elif gesto_actual == "ok" and list(cont.values())[0] == 30:
             os.system("sp pause")
-            play == False
+            play = False
         elif gesto_actual == "fist" and list(cont.values())[0] == 30:
             os.system("sp next")
         elif gesto_actual == "peace" and list(cont.values())[0] == 30:

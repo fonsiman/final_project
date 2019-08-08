@@ -32,9 +32,6 @@ def predict_rgb_image(img):
 
 
 def process_image(img):
-
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
     connectivity = 4
     flags = connectivity
     flags |= cv2.FLOODFILL_FIXED_RANGE
@@ -42,14 +39,11 @@ def process_image(img):
     width = img.shape[1]
     height = img.shape[0]
 
-
     new_image = cv2.floodFill(img, None, (height//2, width//2), (255, 255, 255), (tolerancia,) * 3, (tolerancia,) * 3, flags)
 
     new_image=cv2.threshold(new_image[1],254,255,cv2.THRESH_BINARY)
 
     new_image = cv2.resize(new_image[1][:,:,0], (200,200)) # Reduce image size so training can be faster
-
-
 
     X=[]
 
@@ -58,7 +52,7 @@ def process_image(img):
     X = np.array(X, dtype="uint8")
     X = X.reshape(1, 200, 200, 1)
     X=X/255
-    return X
+    return X, new_image
 
 
 cap = cv2.VideoCapture(0)
@@ -80,7 +74,8 @@ while True:
 
     crop_img_sep = crop_img.copy()
 
-    prediction = predict_rgb_image(process_image(crop_img_sep))
+    X, processed = process_image(crop_img_sep)
+    prediction = predict_rgb_image(X)
 
     best_prediction = class_names[np.argmax(prediction)]
     score = np.amax(prediction)
@@ -151,7 +146,7 @@ while True:
     # ret, crop_img_sep= cv2.threshold(crop_img_sep, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
     cv2.imshow("Image", frame)
-    cv2.imshow("Image mask", crop_img_sep)
+    cv2.imshow("Image mask", processed)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

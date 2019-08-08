@@ -105,10 +105,22 @@ while True:
         git_push()
 
     if gesto_actual == "peace" and list(cont.values())[0] == 30:
-        '''spotify == True
+        spotify = True
+        #os.system("spotify --uri:7dQFpbs34ufIEU745DVclf")
+        play = False
         while spotify:
-            if gesto_actual == "ok" and list(cont.values())[0] == 30:'''
-        os.system("python spotify.py")
+            if gesto_actual == "ok" and list(cont.values())[0] == 30 and not play:
+                os.system("sp play")
+            elif gesto_actual == "ok" and list(cont.values())[0]:
+                os.system("sp pause")
+            elif gesto_actual == "fist" and list(cont.values())[0] == 30:
+                os.system("sp next")
+            elif gesto_actual == "fist" and list(cont.values())[0] == 30:
+                os.system("sp previous")
+            elif gesto_actual == "C" and list(cont.values())[0] == 30:
+                os.system("sp pause")
+                spotify = False
+                break
 
     cv2.putText(frame,
         best_prediction + ' ' + str(round(score, 2)),

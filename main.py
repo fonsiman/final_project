@@ -33,6 +33,8 @@ def predict_rgb_image(img):
 
 def process_image(img):
 
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
     connectivity = 4
     flags = connectivity
     flags |= cv2.FLOODFILL_FIXED_RANGE
@@ -46,6 +48,8 @@ def process_image(img):
     new_image=cv2.threshold(new_image[1],254,255,cv2.THRESH_BINARY)
 
     new_image = cv2.resize(new_image[1][:,:,0], (200,200)) # Reduce image size so training can be faster
+
+
 
     X=[]
 

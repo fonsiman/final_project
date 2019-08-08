@@ -4,6 +4,7 @@ from random import randint
 from keras.models import load_model
 from git import Repo
 import webbrowser
+import os
 
 PATH_OF_GIT_REPO = r'/home/alfonso/ironhack/final_project/.git'  # make sure .git folder is properly configured
 COMMIT_MESSAGE = 'Guardado automático por gestos'
@@ -34,6 +35,8 @@ model = load_model('models/model5000.h5')
 #model = cv2.dnn.readNetFromTensorflow('models/second_model.h5')
 
 cont = {"nothing": 0}
+
+spotify = False
 
 def predict_rgb_image(img):
     prediction = model.predict(img)
@@ -100,6 +103,12 @@ while True:
 
     if gesto_actual == "fist" and list(cont.values())[0] == 30:
         git_push()
+
+    if gesto_actual == "peace" and list(cont.values())[0] == 30:
+        '''spotify == True
+        while spotify:
+            if gesto_actual == "ok" and list(cont.values())[0] == 30:'''
+        os.system("python spotify.py")
 
     cv2.putText(frame,
         best_prediction + ' ' + str(round(score, 2)),

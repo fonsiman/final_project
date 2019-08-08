@@ -105,7 +105,7 @@ while True:
 
 
     print(cont)
-    if spotify == False:
+    if spotify is False:
         if gesto_actual == "ok" and list(cont.values())[0] == 30:
             webbrowser.open('http://www.google.com')
 
@@ -118,17 +118,22 @@ while True:
                 best_prediction: 0
             }
             #os.system("spotify --uri:7dQFpbs34ufIEU745DVclf")
+        if gesto_actual == "C" and list(cont.values())[0] == 150:
+            break
 
     else:
-        if gesto_actual == "ok" and list(cont.values())[0] == 30 and play == False:
+        if gesto_actual == "peace" and list(cont.values())[0] == 30 and play is False:
+            cont = {
+                best_prediction: 0
+            }
             os.system("sp play")
             play = True
-        elif gesto_actual == "ok" and list(cont.values())[0] == 30:
+        elif gesto_actual == "peace" and list(cont.values())[0] == 30:
             os.system("sp pause")
             play = False
         elif gesto_actual == "fist" and list(cont.values())[0] == 30:
             os.system("sp next")
-        elif gesto_actual == "peace" and list(cont.values())[0] == 30:
+        elif gesto_actual == "ok" and list(cont.values())[0] == 30:
             os.system("sp previous")
         elif gesto_actual == "C" and list(cont.values())[0] == 30:
             os.system("sp pause")

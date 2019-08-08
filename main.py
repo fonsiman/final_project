@@ -74,6 +74,9 @@ def process_image(img):
     X=X/255
     return X
 
+spotify = False
+play = False
+
 while True:
 
     ret, frame = cap.read()
@@ -91,36 +94,45 @@ while True:
 
     gesto_actual = list(cont.keys())[0]
 
+
     if gesto_actual == best_prediction:
         cont[gesto_actual] += 1
+
     else:
         cont = {
             best_prediction: 0
         }
+
+
     print(cont)
-    if gesto_actual == "ok" and list(cont.values())[0] == 30:
-        webbrowser.open('http://www.google.com')
+    if spotify == False:
+        if gesto_actual == "ok" and list(cont.values())[0] == 30:
+            webbrowser.open('http://www.google.com')
 
-    if gesto_actual == "fist" and list(cont.values())[0] == 30:
-        git_push()
+        if gesto_actual == "fist" and list(cont.values())[0] == 30:
+            git_push()
 
-    if gesto_actual == "peace" and list(cont.values())[0] == 30:
-        spotify = True
-        #os.system("spotify --uri:7dQFpbs34ufIEU745DVclf")
-        play = False
-        while spotify:
-            if gesto_actual == "ok" and list(cont.values())[0] == 30 and not play:
-                os.system("sp play")
-            elif gesto_actual == "ok" and list(cont.values())[0]:
-                os.system("sp pause")
-            elif gesto_actual == "fist" and list(cont.values())[0] == 30:
-                os.system("sp next")
-            elif gesto_actual == "fist" and list(cont.values())[0] == 30:
-                os.system("sp previous")
-            elif gesto_actual == "C" and list(cont.values())[0] == 30:
-                os.system("sp pause")
-                spotify = False
-                break
+        if gesto_actual == "peace" and list(cont.values())[0] == 30:
+            spotify = True
+            cont = {
+                best_prediction: 0
+            }
+            #os.system("spotify --uri:7dQFpbs34ufIEU745DVclf")
+
+    else:
+        if gesto_actual == "ok" and list(cont.values())[0] == 30 and play == False:
+            os.system("sp play")
+            play == True
+        elif gesto_actual == "ok" and list(cont.values())[0] == 30:
+            os.system("sp pause")
+            play == False
+        elif gesto_actual == "fist" and list(cont.values())[0] == 30:
+            os.system("sp next")
+        elif gesto_actual == "peace" and list(cont.values())[0] == 30:
+            os.system("sp previous")
+        elif gesto_actual == "C" and list(cont.values())[0] == 30:
+            os.system("sp pause")
+            spotify = False
 
     cv2.putText(frame,
         best_prediction + ' ' + str(round(score, 2)),

@@ -59,6 +59,7 @@ def process_image(img):
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
+out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame.shape[1],frame.shape[0]))
 
 width = frame.shape[1] // 2
 height = frame.shape[0] // 2

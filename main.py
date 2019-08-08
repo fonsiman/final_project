@@ -53,7 +53,7 @@ def process_image(img):
     height = img.shape[0]
 
 
-    new_image = cv2.floodFill(img, None, (height//2, width//2), (255), (tolerancia,) * 3, (tolerancia,) * 3, flags)
+    new_image = cv2.floodFill(img, None, (height//2, width//2), (255, 255, 255), (tolerancia,) * 3, (tolerancia,) * 3, flags)
 
     new_image=cv2.threshold(new_image[1],254,255,cv2.THRESH_BINARY)
 
@@ -87,7 +87,9 @@ while True:
 
     crop_img = frame[tuplas_roi[0][1]:tuplas_roi[1][1], tuplas_roi[0][0]:tuplas_roi[1][0]] # Recortamos el contenido del rectángulo para pasarlo por el modelo
 
-    prediction = predict_rgb_image(process_image(crop_img))
+    crop_img_sep = crop_img.copy()
+
+    prediction = predict_rgb_image(process_image(crop_img_sep))
 
     best_prediction = class_names[np.argmax(prediction)]
     score = np.amax(prediction)
@@ -147,6 +149,8 @@ while True:
         (255, 0, 0),
         2,
         cv2.LINE_AA)
+
+    #ret, crop_img = cv2.threshold(crop_img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
     cv2.imshow("Image", frame)
     cv2.imshow("Image mask", crop_img)

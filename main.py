@@ -11,7 +11,7 @@ class_names = {0: 'fist', 1: 'ok', 2: 'peace', 3: 'C', 4: 'nothing'}
 
 cont = {"nothing": 0}
 spotify = False
-play = False
+play = True
 model = load_model('models/model-generator.h5')
 
 def git_push():
@@ -117,7 +117,7 @@ while True:
         (0, 0, 255),
         2,
         cv2.LINE_AA)
-        play = True
+        os.system("sp play")
         if gesto_actual == "peace" and list(cont.values())[0] == 30 and play is False:
             cont = {
                 best_prediction: 0

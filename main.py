@@ -35,7 +35,7 @@ def process_image(img):
     connectivity = 4
     flags = connectivity
     flags |= cv2.FLOODFILL_FIXED_RANGE
-    tolerancia = 40
+    tolerancia = 60
     width = img.shape[1]
     height = img.shape[0]
 
@@ -117,6 +117,7 @@ while True:
         (0, 0, 255),
         2,
         cv2.LINE_AA)
+        play = True
         if gesto_actual == "peace" and list(cont.values())[0] == 30 and play is False:
             cont = {
                 best_prediction: 0

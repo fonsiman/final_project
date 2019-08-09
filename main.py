@@ -92,7 +92,7 @@ while True:
         }
 
 
-    print(cont)
+    #print(cont)
     if spotify is False:
         if gesto_actual == "ok" and list(cont.values())[0] == 30:
             webbrowser.open('http://www.google.com')

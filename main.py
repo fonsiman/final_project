@@ -12,7 +12,7 @@ class_names = {0: 'fist', 1: 'ok', 2: 'peace', 3: 'C', 4: 'nothing'}
 cont = {"nothing": 0}
 spotify = False
 play = True
-model = load_model('models/model-generator.h5')
+model = load_model('models/model5000.h5')
 
 def git_push():
     try:
@@ -57,7 +57,6 @@ def process_image(img):
 
 cap = cv2.VideoCapture(0)
 ret, frame = cap.read()
-out = cv2.VideoWriter('outpy.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 10, (frame.shape[1],frame.shape[0]))
 
 width = frame.shape[1] // 2
 height = frame.shape[0] // 2
@@ -92,7 +91,7 @@ while True:
         }
 
 
-    #print(cont)
+    print(cont)
     if spotify is False:
         if gesto_actual == "ok" and list(cont.values())[0] == 30:
             webbrowser.open('http://www.google.com')
@@ -109,15 +108,6 @@ while True:
             break
 
     else:
-        cv2.putText(frame,
-        "MODO SPOTIFY ACTIVO",
-        (20 , int(frame.shape[0]) -50),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        1,
-        (0, 0, 255),
-        2,
-        cv2.LINE_AA)
-        os.system("sp play")
         if gesto_actual == "peace" and list(cont.values())[0] == 30 and play is False:
             cont = {
                 best_prediction: 0

@@ -46,6 +46,8 @@ model.add(Dense(128, activation='relu'))
 model.add(Dense(5, activation='softmax'))
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])`
 
+We are checked that with 5 epochs and 1000 steps per epoch is enought.
+
 # Performance
 
 To make run the model we are going to capture the images with the webcam using **OpenCV**. In particular, we capture a ROI (Region Of Interest) where we apply the model to identify the hand gesture.
@@ -60,6 +62,9 @@ The actions programmed according to the gesture are:
     * **Peace**: Play/pause.
     * **C**: Exit (close Spotify).
 * **C**: Exit (close OpenCV).
+
+
+![Animation of hands](readme-images/hand-gesture-animation.png)
 
 To more information, you can check the files *model.ipynb* or *main.py*.
 

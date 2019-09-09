@@ -34,16 +34,27 @@ To binarize it, we are going to take value of the middle pixel (we assume that t
 The model is a Convolutional Neural Network make it with keras. The structure is as follows:
 
 `# Construction of model
+
 model = Sequential()
+
 model.add(Conv2D(128, (5, 5), activation='relu', input_shape=(200, 200, 1))) 
+
 model.add(MaxPooling2D((2, 2)))
+
 model.add(Conv2D(64, (3, 3), activation='relu')) 
+
 model.add(MaxPooling2D((2, 2)))
+
 model.add(Conv2D(32, (3, 3), activation='relu'))
+
 model.add(MaxPooling2D((2, 2)))
+
 model.add(Flatten())
+
 model.add(Dense(128, activation='relu'))
+
 model.add(Dense(5, activation='softmax'))
+
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])`
 
 We are checked that with 5 epochs and 1000 steps per epoch is enought.

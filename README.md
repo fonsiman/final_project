@@ -64,7 +64,7 @@ The actions programmed according to the gesture are:
 * **C**: Exit (close OpenCV).
 
 
-![Animation of hands](readme-images/hand-gesture-animation.png)
+![Animation of hands](readme-images/hand-gesture-animation.gif)
 
 To more information, you can check the files *model.ipynb* or *main.py*.
 

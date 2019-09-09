@@ -35,7 +35,7 @@ def process_image(img):
     connectivity = 4
     flags = connectivity
     flags |= cv2.FLOODFILL_FIXED_RANGE
-    tolerancia = 40
+    tolerancia = 60
     width = img.shape[1]
     height = img.shape[0]
 

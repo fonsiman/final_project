@@ -79,5 +79,12 @@ The actions programmed according to the gesture are:
 
 To more information, you can check the files *model.ipynb* or *main.py*.
 
+# To do's
+
+* The model has been trained with a white wall in the background, so to run it, it's necessary a white background.
+* The model is very sensitive to light and in some situations does not recognize the gesture correctly. Often, you can fix it change it the parameter `tolerancia` in the file main.py
+* The logs files have an enconding error. 
+
+To improve the model it's necessary to train it with more images with different brightness and backgrounds.
 
 
